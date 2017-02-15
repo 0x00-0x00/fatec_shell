@@ -1,4 +1,7 @@
 #!/bin/bash
+# locate file script escrito por Andre Marques como tarefa na Fatec.
+# ---------------------------------
+# 2017-02-14
 
 if [[ $1 == "" ]]; then
     echo -n "Digite um nome de arquivo: "
