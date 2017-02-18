@@ -24,16 +24,17 @@ function check_user
     fi
 
 
-    data=$(cat $user_file | grep $1 | grep -oP '.+(?=::)');
+    data=$(cat $user_file | grep $1 | head -n1);
+    interpreter=$(echo $data |  grep -oP '(\/bin[\/a-z]+)')
     user=$(echo $data | grep -oP '[a-zA-Z0-9]+(?=:x:)');
-    uid=$(echo $data | grep -oP '(?!:x:)[0-9]+(?=:)');
-    gid=$(echo $data | grep -oP '(?![0-9]+:)[0-9]+');
+    uid=$(echo $data | grep -oP '(?<=:x:)[0-9]+');
+    gid=$(echo $data | grep -oP '(?<=[0-9]:)[0-9]+');
 
     echo "_______________________________"
     echo "    Informacoes de usuario"
     echo "=============================="
 
-    echo -n "User: ";
+    echo -n "Usuario: ";
     echo $user;
 
     echo -n "UID: ";
@@ -41,6 +42,9 @@ function check_user
 
     echo -n "GID: ";
     echo $gid;
+
+    echo -n "Interpretador: "
+    echo $interpreter;
 
 }
 
