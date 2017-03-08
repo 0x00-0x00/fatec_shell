@@ -7,4 +7,4 @@ if [[ ! -e ${poems} ]]; then
     exit;
 fi
 
-cat ${poems} | sed 's/<\/p>//g' | sed 's/<p class="frase fr0" id="[a-zA-Z0-9]*">//g' | sed 's/\.\.\./\n/g'
+cat ${poems} | sed 's/<\/p>//g' | sed 's/<p class="frase fr0" id="[a-zA-Z0-9]*">//g' | sed 's/\.\.\./\n/g' | sed 's/[,\.!\(\)“:/-\?]//g' | sed 's/PDF//g' | sed 's/"//g' | sed "s/'//g" | sed 's/[-_]*//g' | sed 's/\&//g' | sed 's/\]//g' | sed 's/«//g'
