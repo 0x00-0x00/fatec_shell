@@ -7,11 +7,20 @@ if [[ ! -e ${poem_file} ]]; then
     exit;
 fi
 
+
+function generate_termos
+{
+    cat ${poem_file} | tr ' ' '\n' | sort > termos.txt;
+    return 0;
+}
+
+
 function generate_corpora
 {
     cat ${poem_file} | tr ' ' '\n' | sort | uniq -u > corpora.txt;
     return 0;
 }
+
 
 function generate_frequency
 {
@@ -26,11 +35,13 @@ function generate_frequency
     return 0;
 }
 
+
 function report
 {
     echo "[*] Analisando arquivo: ${poem_file}"
     word_count=$(cat ${poem_file} | wc -w);
     echo -e "    [-] Total de palavras : \033[092m${word_count}\033[0m";
+    generate_termos;
     generate_corpora;
     generate_frequency;
     echo -e "    [-] Corpora palavras: \033[092m$(cat corpora.txt | wc -l)\033[0m";
