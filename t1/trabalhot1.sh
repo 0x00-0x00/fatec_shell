@@ -106,6 +106,7 @@ function monitor_instances
             # First, we check if the dead means equality to the number
             # of process spawned.
             if [ $dead -eq ${#tracker[@]} ]; then
+                info "Todas as instancias foram finalizadas.";
                 exit 0
             fi
 
