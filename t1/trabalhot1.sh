@@ -56,6 +56,13 @@ function help_section
     done
 }
 
+
+function open_instance
+{
+    nohup java -jar $1 $2 $3 $4 $5 1>>stdout.log 2>>stderr.log &
+}
+
+
 function initiate
 {
     #  Check instance N
@@ -66,7 +73,8 @@ function initiate
     while [ $instance_n -gt 0 ]; do
        chosen_alias=${alias[$instance_n]};
        pre "Iniciando instancia $chosen_alias";
-       nohup java -jar $target "ZeR0-C00L" "AndreMarques" $chosen_alias $instance_n 1>>stdout.log 2>>stderr.log &
+       #nohup java -jar $target "ZeR0-C00L" "AndreMarques" $chosen_alias $instance_n 1>>stdout.log 2>>stderr.log &
+       open_instance $target "ZeR0-C00L" "AndreMarques" $chosen_alias $instance_n
        report_status $?;
 
        tracker+=(".service_$instance_n");
@@ -105,10 +113,10 @@ function monitor_instances
 
             # First, we check if the dead means equality to the number
             # of process spawned.
-            if [ $dead -eq ${#tracker[@]} ]; then
-                info "Todas as instancias foram finalizadas.";
-                exit 0
-            fi
+            #if [ $dead -eq ${#tracker[@]} ]; then
+            #    info "Todas as instancias foram finalizadas.";
+            #    exit 0
+            #fi
 
             #  Then, we will jump the invalid element array
             if [[ $instance == "" ]]; then
@@ -117,9 +125,12 @@ function monitor_instances
 
             # Finally, check if the lock file is existant or not.
             if [[ ! -f "$instance" ]]; then
-                delete=("$instance");
-                tracker=("${tracker[@]/$delete}");  # remove element
+                #delete=("$instance");
+                #tracker=("${tracker[@]/$delete}");  # remove element
                 echo -e "\n[\033[093m!\033[0m] Instancia ${instance} terminou.";
+                inst_n=$(echo $instance | grep -oP '\d+');
+                info "Reiniciando instancia $inst_n [${alias[$inst_n]}]";
+                open_instance $target "Zer0-C00L" "AndreMarques" ${alias[$inst_n]} $inst_n;
                 ((dead++));
             fi
 
