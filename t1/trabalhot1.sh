@@ -91,8 +91,13 @@ function log_errors
     curr_time=$(python -c "import time; print(int(time.time()))");
 
     modulus=$(($1 % 10));
+
+    err_number=$(cat $err_file | grep ERROR | wc -l);
+    war_number=$(cat $err_file | grep Warning | wc -l);
+
+
     if [ $modulus -eq 0 ]; then
-        echo -n -e "[\033[093m!\033[0m] Erros: $(wc -l $err_file | awk {'print $1'}) em $(($curr_time-$start_time)) segundos.\r"
+        echo -n -e "[\033[093m!\033[0m] Erros: $err_number || Warnings: $war_number em $(($curr_time-$start_time)) segundos.\r"
     fi
 }
 
